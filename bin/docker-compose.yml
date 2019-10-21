@@ -1,0 +1,22 @@
+toybox-wp-cli-mariadb:
+    image: nutsllc/toybox-mariadb:10.1.14
+    volumes:
+        #- /etc/localtime:/etc/localtime:ro
+        - ${DB_DATA_PATH}:/var/lib/mysql
+    environment:
+        - TOYBOX_UID=${TOYBOX_UID}
+        - TOYBOX_GID=${TOYBOX_GID}
+        - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+        - MYSQL_DATABASE=${DB_NAME}
+        - MYSQL_USER=${DB_USER}
+        - MYSQL_PASSWORD=${DB_PASSWORD}
+        - TERM=xterm
+
+toybox-wp-cli:
+    #    build: ../build
+    #    env_file: '.env'
+    image: cli
+    volumes:
+        - ${WP_DOCUMENTROOT_PATH}:/usr/share/nginx/html
+    links:
+        - toybox-wp-cli-mariadb:${DB_HOST}
